@@ -1,0 +1,10 @@
+{
+  "userId": "user_123",
+  "fullName": "Aidana Worker",
+  "email": "worker@jobi.kz",
+  "phone": "+77011223344",
+  "roles": ["worker", "brigade"],
+  "accessToken": "jwt-access-token",
+  "refreshToken": "jwt-refresh-token",
+  "expiresAt": "2026-12-31T23:59:59.000Z"
+}

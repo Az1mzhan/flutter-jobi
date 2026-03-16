@@ -1,0 +1,23 @@
+[
+  {
+    "id": "task_1",
+    "professionId": "painter",
+    "professionName": "Painter",
+    "description": "Need two painters for urgent apartment repainting.",
+    "locationName": "Abylai Khan Avenue 14",
+    "latitude": 43.238949,
+    "longitude": 76.889709,
+    "cityId": "almaty",
+    "regionId": "almaty_region",
+    "cityName": "Almaty",
+    "regionName": "Almaty Region",
+    "price": 90000,
+    "startTime": "2026-03-16T14:00:00.000Z",
+    "durationHours": 8,
+    "urgent": true,
+    "status": "Open",
+    "employerName": "Khan Stroy LLP",
+    "workerName": null,
+    "createdAt": "2026-03-16T08:00:00.000Z"
+  }
+]

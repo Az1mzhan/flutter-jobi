@@ -1,0 +1,33 @@
+{
+  "id": "profile_1",
+  "fullName": "Aidana Worker",
+  "city": "Almaty",
+  "region": "Almaty Region",
+  "latitude": 43.238949,
+  "longitude": 76.889709,
+  "about": "Reliable finishing specialist with brigade coordination experience.",
+  "avatarUrl": "",
+  "roles": ["worker", "employer", "brigade"],
+  "professions": ["Painter", "Finisher", "Brigade leader"],
+  "experience": [
+    { "profession": "Painter", "months": 42 },
+    { "profession": "Finisher", "months": 30 }
+  ],
+  "totalTasks": 96,
+  "successfulTasks": 88,
+  "cancellations": 4,
+  "rating": 4.8,
+  "availableNow": true,
+  "readyToTravel": true,
+  "firstJobDate": "2022-02-15T00:00:00.000Z",
+  "workHistory": [
+    {
+      "id": "hist_1",
+      "title": "Office repainting",
+      "counterparty": "Khan Stroy LLP",
+      "date": "2026-03-10T10:00:00.000Z",
+      "status": "Completed",
+      "amount": 85000
+    }
+  ]
+}
