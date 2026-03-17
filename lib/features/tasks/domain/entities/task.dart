@@ -6,10 +6,8 @@ enum TaskStatus {
   inProgress,
   completed,
   cancelled,
-  rejected,
-}
+  rejected;
 
-extension TaskStatusX on TaskStatus {
   String get apiValue => switch (this) {
         TaskStatus.open => 'Open',
         TaskStatus.assigned => 'Assigned',

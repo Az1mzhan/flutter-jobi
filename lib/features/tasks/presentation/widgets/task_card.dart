@@ -108,7 +108,7 @@ class _UrgentBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.error.withOpacity(0.10),
+        color: Theme.of(context).colorScheme.error.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(

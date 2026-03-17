@@ -35,7 +35,7 @@ class UserProfileModel extends UserProfile {
       about: json['about'] as String? ?? '',
       avatarUrl: json['avatarUrl'] as String? ?? '',
       roles: ((json['roles'] as List<dynamic>? ?? const <dynamic>[])
-              .map((role) => RoleTypeX.fromString(role as String)))
+              .map((role) => RoleType.fromString(role as String)))
           .toList(),
       professions: (json['professions'] as List<dynamic>? ?? const <dynamic>[])
           .map((profession) => profession as String)

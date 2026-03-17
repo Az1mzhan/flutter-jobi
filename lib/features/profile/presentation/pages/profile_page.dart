@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:jobi/core/constants/user_roles.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:jobi/features/profile/domain/entities/user_profile.dart';
@@ -92,11 +91,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                               const SizedBox(height: 12),
-                              DropdownButtonFormField<RoleType>(
-                                value: authState.activeRole,
+                              DropdownButtonFormField(
+                                initialValue: authState.activeRole,
                                 items: authState.availableRoles
                                     .map(
-                                      (role) => DropdownMenuItem<RoleType>(
+                                      (role) => DropdownMenuItem(
                                         value: role,
                                         child: Text(role.label),
                                       ),

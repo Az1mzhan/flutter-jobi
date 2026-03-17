@@ -61,7 +61,7 @@ class AppTheme {
       ),
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.surfaceAlt,
-        selectedColor: AppColors.brand.withOpacity(0.14),
+        selectedColor: AppColors.brand.withValues(alpha: 0.14),
         side: const BorderSide(color: AppColors.divider),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         labelStyle: textTheme.bodyMedium?.copyWith(color: AppColors.ink),

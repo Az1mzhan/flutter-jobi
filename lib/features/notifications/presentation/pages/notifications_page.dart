@@ -64,7 +64,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       return Card(
                         color: notification.isRead
                             ? null
-                            : Theme.of(context).colorScheme.primary.withOpacity(0.08),
+                            : Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withValues(alpha: 0.08),
                         child: ListTile(
                           onTap: () async {
                             await context

@@ -4,10 +4,8 @@ enum RoleType {
   entrepreneur,
   company,
   brigade,
-  administrator,
-}
+  administrator;
 
-extension RoleTypeX on RoleType {
   String get apiValue => switch (this) {
         RoleType.worker => 'worker',
         RoleType.employer => 'employer',

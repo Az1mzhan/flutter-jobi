@@ -55,7 +55,7 @@ class MessageBubble extends StatelessWidget {
               Text(
                 '${DateFormat('HH:mm').format(message.sentAt)}${isMine ? (message.isRead ? ' · Read' : ' · Sent') : ''}',
                 style: TextStyle(
-                  color: textColor.withOpacity(0.8),
+                  color: textColor.withValues(alpha: 0.8),
                   fontSize: 12,
                 ),
               ),

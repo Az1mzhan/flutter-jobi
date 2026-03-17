@@ -100,7 +100,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               child: ListView(
                 children: [
                   DropdownButtonFormField<String>(
-                    value: _selectedProfession,
+                    initialValue: _selectedProfession,
                     items: _professions
                         .map(
                           (profession) => DropdownMenuItem(

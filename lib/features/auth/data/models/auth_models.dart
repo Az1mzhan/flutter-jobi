@@ -44,7 +44,7 @@ class UserSessionModel extends UserSession {
       email: json['email'] as String? ?? '',
       phone: json['phone'] as String? ?? '',
       roles: ((json['roles'] as List<dynamic>? ?? const <dynamic>[])
-              .map((role) => RoleTypeX.fromString(role as String)))
+              .map((role) => RoleType.fromString(role as String)))
           .toList(),
       accessToken: json['accessToken'] as String? ?? '',
       refreshToken: json['refreshToken'] as String? ?? '',

@@ -32,7 +32,7 @@ import 'package:jobi/features/tasks/data/repositories/tasks_repository_impl.dart
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final secureStorage = SecureStorageService(const FlutterSecureStorage());
+  const secureStorage = SecureStorageService(FlutterSecureStorage());
   final preferences = await PreferencesService.create();
   final sessionManager = SessionManager(secureStorage);
   final apiClient = ApiClient(

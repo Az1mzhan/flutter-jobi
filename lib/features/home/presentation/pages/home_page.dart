@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jobi/core/constants/user_roles.dart';
 import 'package:jobi/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:jobi/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:jobi/features/profile/presentation/cubit/profile_cubit.dart';
@@ -64,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                     gradient: LinearGradient(
                       colors: [
                         theme.colorScheme.primary,
-                        theme.colorScheme.primary.withOpacity(0.72),
+                        theme.colorScheme.primary.withValues(alpha: 0.72),
                       ],
                     ),
                   ),
@@ -82,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         'Current role: $role',
                         style: theme.textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                         ),
                       ),
                       const SizedBox(height: 18),

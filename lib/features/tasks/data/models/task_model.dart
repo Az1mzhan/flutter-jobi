@@ -41,7 +41,7 @@ class TaskModel extends TaskEntity {
           DateTime.now(),
       durationHours: json['durationHours'] as int? ?? 1,
       urgent: json['urgent'] as bool? ?? false,
-      status: TaskStatusX.fromString(json['status'] as String? ?? 'Open'),
+      status: TaskStatus.fromString(json['status'] as String? ?? 'Open'),
       employerName: json['employerName'] as String? ?? '',
       workerName: json['workerName'] as String?,
       createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ??

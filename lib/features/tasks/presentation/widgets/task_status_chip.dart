@@ -9,12 +9,12 @@ class TaskStatusChip extends StatelessWidget {
 
   Color _backgroundColor() {
     return switch (status) {
-      TaskStatus.open => AppColors.info.withOpacity(0.14),
-      TaskStatus.assigned => AppColors.warning.withOpacity(0.18),
-      TaskStatus.inProgress => AppColors.brand.withOpacity(0.18),
-      TaskStatus.completed => AppColors.success.withOpacity(0.14),
-      TaskStatus.cancelled => AppColors.danger.withOpacity(0.14),
-      TaskStatus.rejected => AppColors.danger.withOpacity(0.14),
+      TaskStatus.open => AppColors.info.withValues(alpha: 0.14),
+      TaskStatus.assigned => AppColors.warning.withValues(alpha: 0.18),
+      TaskStatus.inProgress => AppColors.brand.withValues(alpha: 0.18),
+      TaskStatus.completed => AppColors.success.withValues(alpha: 0.14),
+      TaskStatus.cancelled => AppColors.danger.withValues(alpha: 0.14),
+      TaskStatus.rejected => AppColors.danger.withValues(alpha: 0.14),
     };
   }
 
