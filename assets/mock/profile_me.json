@@ -1,33 +1,42 @@
 {
-  "id": "profile_1",
-  "fullName": "Aidana Worker",
-  "city": "Almaty",
-  "region": "Almaty Region",
-  "latitude": 43.238949,
-  "longitude": 76.889709,
-  "about": "Reliable finishing specialist with brigade coordination experience.",
-  "avatarUrl": "",
-  "roles": ["worker", "employer", "brigade"],
-  "professions": ["Painter", "Finisher", "Brigade leader"],
+  "id": "profile_ip_elyubaeva",
+  "fullName": "ИП ЕЛЮБАЕВА",
+  "city": "Астана",
+  "region": "Астана",
+  "latitude": 51.169392,
+  "longitude": 71.449074,
+  "about": "Индивидуальный предприниматель в Астане.\nАдрес: ул. Нурмухамбет Кожахметов, дом 32.\nИИН/БИН: 780529402169.\nБанк: АО \"Kaspi Bank\".\nКБе: 19.\nБИК: CASPKZKA.\nСчет: KZ59722S000029076373.",
+  "avatarUrl": "assets/images/ip_elyubaeva_avatar.png",
+  "roles": ["entrepreneur", "employer"],
+  "professions": ["Грузоперевозки", "Логистика", "Экспедирование"],
   "experience": [
-    { "profession": "Painter", "months": 42 },
-    { "profession": "Finisher", "months": 30 }
+    { "profession": "Грузоперевозки", "months": 48 },
+    { "profession": "Логистика", "months": 42 },
+    { "profession": "Экспедирование", "months": 36 }
   ],
-  "totalTasks": 96,
-  "successfulTasks": 88,
-  "cancellations": 4,
-  "rating": 4.8,
+  "totalTasks": 128,
+  "successfulTasks": 123,
+  "cancellations": 2,
+  "rating": 4.9,
   "availableNow": true,
   "readyToTravel": true,
-  "firstJobDate": "2022-02-15T00:00:00.000Z",
+  "firstJobDate": "2021-03-01T00:00:00.000Z",
   "workHistory": [
     {
-      "id": "hist_1",
-      "title": "Office repainting",
-      "counterparty": "Khan Stroy LLP",
-      "date": "2026-03-10T10:00:00.000Z",
-      "status": "Completed",
-      "amount": 85000
+      "id": "hist_ip_1",
+      "title": "Доставка строительных материалов по Астане",
+      "counterparty": "ТОО Capital Build",
+      "date": "2026-03-14T10:00:00.000Z",
+      "status": "Завершено",
+      "amount": 185000
+    },
+    {
+      "id": "hist_ip_2",
+      "title": "Экспедирование груза на склад заказчика",
+      "counterparty": "Kaspi Logistics Partner",
+      "date": "2026-03-07T09:00:00.000Z",
+      "status": "Завершено",
+      "amount": 142000
     }
   ]
 }

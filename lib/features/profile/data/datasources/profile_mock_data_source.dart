@@ -10,7 +10,7 @@ class ProfileMockDataSource {
   ProfileMockDataSource(this._preferences);
 
   final PreferencesService _preferences;
-  static const _storageKey = 'jobi_profile_cache';
+  static const _storageKey = 'jobi_profile_cache_v2';
 
   Future<UserProfileModel> getMyProfile() async {
     await Future<void>.delayed(AppConstants.mockDelay);
@@ -21,53 +21,59 @@ class ProfileMockDataSource {
     }
 
     final profile = UserProfileModel(
-      id: 'profile_1',
-      fullName: 'Айдана У.',
-      city: 'Алматы',
-      region: 'Алматинская область',
-      latitude: 43.238949,
-      longitude: 76.889709,
+      id: 'profile_ip_elyubaeva',
+      fullName: 'ИП ЕЛЮБАЕВА',
+      city: 'Астана',
+      region: 'Астана',
+      latitude: 51.169392,
+      longitude: 71.449074,
       about:
-          'Надежный специалист по отделке с опытом координации бригады и быстрым откликом на срочные задачи.',
-      avatarUrl: '',
-      roles: const [RoleType.worker, RoleType.employer, RoleType.brigade],
-      professions: const ['Маляр', 'Отделочник', 'Бригадир'],
+          'Индивидуальный предприниматель в Астане.\n'
+          'Адрес: ул. Нурмухамбет Кожахметов, дом 32.\n'
+          'ИИН/БИН: 780529402169.\n'
+          'Банк: АО "Kaspi Bank".\n'
+          'КБе: 19.\n'
+          'БИК: CASPKZKA.\n'
+          'Счет: KZ59722S000029076373.',
+      avatarUrl: 'assets/images/ip_elyubaeva_avatar.jpeg',
+      roles: const [RoleType.entrepreneur, RoleType.employer],
+      professions: const ['Грузоперевозки', 'Логистика', 'Экспедирование'],
       experience: const [
-        ProfessionExperience(profession: 'Маляр', months: 42),
-        ProfessionExperience(profession: 'Отделочник', months: 30),
-        ProfessionExperience(profession: 'Бригадир', months: 18),
+        ProfessionExperience(profession: 'Грузоперевозки', months: 48),
+        ProfessionExperience(profession: 'Логистика', months: 42),
+        ProfessionExperience(profession: 'Экспедирование', months: 36),
       ],
-      totalTasks: 96,
-      successfulTasks: 88,
-      cancellations: 4,
-      rating: 4.8,
+      totalTasks: 128,
+      successfulTasks: 123,
+      cancellations: 2,
+      rating: 4.9,
       availableNow: true,
       readyToTravel: true,
-      firstJobDate: DateTime(2022, 2, 15),
+      firstJobDate: DateTime(2021, 3, 1),
       workHistory: [
         WorkHistoryEntry(
-          id: 'hist_1',
-          title: 'Покраска офиса',
-          counterparty: 'Хан Строй',
-          date: DateTime.now().subtract(const Duration(days: 3)),
+          id: 'hist_ip_1',
+          title: 'Доставка строительных материалов по Астане',
+          counterparty: 'ТОО Capital Build',
+          date: DateTime.now().subtract(const Duration(days: 4)),
           status: 'Завершено',
-          amount: 85000,
+          amount: 185000,
         ),
         WorkHistoryEntry(
-          id: 'hist_2',
-          title: 'Срочная помощь с плиткой',
-          counterparty: 'Частный работодатель',
-          date: DateTime.now().subtract(const Duration(days: 10)),
+          id: 'hist_ip_2',
+          title: 'Экспедирование груза на склад заказчика',
+          counterparty: 'Kaspi Logistics Partner',
+          date: DateTime.now().subtract(const Duration(days: 11)),
           status: 'Завершено',
-          amount: 45000,
+          amount: 142000,
         ),
         WorkHistoryEntry(
-          id: 'hist_3',
-          title: 'Бригада для уборки склада',
-          counterparty: 'Логистический хаб',
-          date: DateTime.now().subtract(const Duration(days: 18)),
-          status: 'Отменено',
-          amount: 30000,
+          id: 'hist_ip_3',
+          title: 'Срочная перевозка коммерческого груза',
+          counterparty: 'Частный заказчик',
+          date: DateTime.now().subtract(const Duration(days: 19)),
+          status: 'Завершено',
+          amount: 96000,
         ),
       ],
     );

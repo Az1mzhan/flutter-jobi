@@ -339,13 +339,7 @@ class _ProfileHeader extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Row(
           children: [
-            CircleAvatar(
-              radius: 34,
-              child: Text(
-                profile.fullName.isNotEmpty ? profile.fullName[0] : '?',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
+            _Avatar(profile: profile),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -373,5 +367,39 @@ class _ProfileHeader extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _Avatar extends StatelessWidget {
+  const _Avatar({required this.profile});
+
+  final UserProfile profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final avatarUrl = profile.avatarUrl.trim();
+    final imageProvider = _resolveImageProvider(avatarUrl);
+
+    return CircleAvatar(
+      radius: 34,
+      backgroundImage: imageProvider,
+      child: imageProvider == null
+          ? Text(
+              profile.fullName.isNotEmpty ? profile.fullName[0] : '?',
+              style: Theme.of(context).textTheme.headlineSmall,
+            )
+          : null,
+    );
+  }
+
+  ImageProvider<Object>? _resolveImageProvider(String avatarUrl) {
+    if (avatarUrl.isEmpty) return null;
+    if (avatarUrl.startsWith('assets/')) {
+      return AssetImage(avatarUrl);
+    }
+    if (avatarUrl.startsWith('http://') || avatarUrl.startsWith('https://')) {
+      return NetworkImage(avatarUrl);
+    }
+    return null;
   }
 }
