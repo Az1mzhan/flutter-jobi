@@ -1,41 +1,41 @@
 class Validators {
   static String? required(String? value, {String fieldName = 'Field'}) {
     if (value == null || value.trim().isEmpty) {
-      return '$fieldName is required';
+      return 'Поле "$fieldName" обязательно';
     }
     return null;
   }
 
   static String? email(String? value) {
     if (required(value, fieldName: 'Email') != null) {
-      return 'Email is required';
+      return 'Email обязателен';
     }
 
     final emailPattern = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
     if (!emailPattern.hasMatch(value!.trim())) {
-      return 'Enter a valid email address';
+      return 'Введите корректный email';
     }
     return null;
   }
 
   static String? password(String? value) {
-    if (required(value, fieldName: 'Password') != null) {
-      return 'Password is required';
+    if (required(value, fieldName: 'Пароль') != null) {
+      return 'Пароль обязателен';
     }
     if (value!.trim().length < 6) {
-      return 'Password must be at least 6 characters';
+      return 'Пароль должен содержать минимум 6 символов';
     }
     return null;
   }
 
   static String? phone(String? value) {
-    if (required(value, fieldName: 'Phone number') != null) {
-      return 'Phone number is required';
+    if (required(value, fieldName: 'Номер телефона') != null) {
+      return 'Номер телефона обязателен';
     }
 
     final digits = value!.replaceAll(RegExp(r'\D'), '');
     if (digits.length < 10) {
-      return 'Enter a valid phone number';
+      return 'Введите корректный номер телефона';
     }
     return null;
   }

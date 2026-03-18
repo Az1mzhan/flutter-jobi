@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobi/core/l10n/enum_localizations.dart';
 import 'package:jobi/core/theme/app_colors.dart';
 import 'package:jobi/features/tasks/domain/entities/task.dart';
 
@@ -38,7 +39,7 @@ class TaskStatusChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
-        status.label,
+        status.localizedLabel(context),
         style: TextStyle(
           color: _foregroundColor(),
           fontWeight: FontWeight.w700,

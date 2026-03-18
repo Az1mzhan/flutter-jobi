@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jobi/core/constants/user_roles.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
+import 'package:jobi/core/l10n/enum_localizations.dart';
 import 'package:jobi/core/widgets/primary_button.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -9,6 +11,7 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     final roles = RoleType.values.where((role) => role != RoleType.administrator);
 
     return Scaffold(
@@ -20,7 +23,7 @@ class WelcomePage extends StatelessWidget {
             children: [
               const Spacer(),
               Text(
-                'Hire fast. Get hired nearby.',
+                l10n.text('welcomeTitle'),
                 style: theme.textTheme.displaySmall?.copyWith(
                   fontWeight: FontWeight.w800,
                   height: 1.05,
@@ -28,7 +31,7 @@ class WelcomePage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'JOBI helps employers, workers, and brigades connect instantly across Kazakhstan with geo-based search, task management, and chat.',
+                l10n.text('welcomeSubtitle'),
                 style: theme.textTheme.bodyLarge,
               ),
               const SizedBox(height: 24),
@@ -39,14 +42,14 @@ class WelcomePage extends StatelessWidget {
                     .map(
                       (role) => Chip(
                         avatar: const Icon(Icons.check_circle_outline_rounded, size: 18),
-                        label: Text(role.label),
+                        label: Text(role.localizedLabel(context)),
                       ),
                     )
                     .toList(),
               ),
               const Spacer(),
               PrimaryButton(
-                label: 'Create account',
+                label: l10n.text('createAccount'),
                 onPressed: () => context.go('/auth/sign-up'),
               ),
               const SizedBox(height: 12),
@@ -55,7 +58,7 @@ class WelcomePage extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size.fromHeight(52),
                 ),
-                child: const Text('I already have an account'),
+                child: Text(l10n.text('alreadyHaveAccount')),
               ),
               const SizedBox(height: 24),
             ],

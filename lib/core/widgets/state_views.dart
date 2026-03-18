@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 
 class EmptyStateView extends StatelessWidget {
   const EmptyStateView({
@@ -65,7 +66,10 @@ class ErrorStateView extends StatelessWidget {
             const SizedBox(height: 12),
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 16),
-            OutlinedButton(onPressed: onRetry, child: const Text('Retry')),
+            OutlinedButton(
+              onPressed: onRetry,
+              child: Text(context.l10n.text('retry')),
+            ),
           ],
         ),
       ),

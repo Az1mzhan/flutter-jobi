@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/features/chat/domain/entities/chat_entities.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -9,11 +10,15 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final isMine = message.isMine;
     final bubbleColor = isMine
         ? Theme.of(context).colorScheme.primary
         : Theme.of(context).colorScheme.surfaceContainerHighest;
     final textColor = isMine ? Colors.white : Theme.of(context).colorScheme.onSurface;
+    final statusLabel = isMine
+        ? (message.isRead ? l10n.text('read') : l10n.text('sent'))
+        : null;
 
     return Align(
       alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
@@ -53,7 +58,7 @@ class MessageBubble extends StatelessWidget {
                 ),
               const SizedBox(height: 6),
               Text(
-                '${DateFormat('HH:mm').format(message.sentAt)}${isMine ? (message.isRead ? ' · Read' : ' · Sent') : ''}',
+                '${DateFormat('HH:mm', l10n.localeName).format(message.sentAt)}${statusLabel == null ? '' : ' • $statusLabel'}',
                 style: TextStyle(
                   color: textColor.withValues(alpha: 0.8),
                   fontSize: 12,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/features/profile/presentation/cubit/profile_cubit.dart';
 
 class WorkHistoryPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _WorkHistoryPageState extends State<WorkHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         final profile = state.profile;
@@ -30,9 +32,9 @@ class _WorkHistoryPageState extends State<WorkHistoryPage> {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
 
-        final dateFormat = DateFormat('d MMM yyyy');
+        final dateFormat = DateFormat('d MMM yyyy', l10n.localeName);
         return Scaffold(
-          appBar: AppBar(title: const Text('Ratings & history')),
+          appBar: AppBar(title: Text(l10n.text('ratingsAndHistory'))),
           body: SafeArea(
             child: ListView(
               padding: const EdgeInsets.all(20),
@@ -44,7 +46,7 @@ class _WorkHistoryPageState extends State<WorkHistoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Trust snapshot',
+                          l10n.text('trustSnapshot'),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 16),
@@ -53,19 +55,20 @@ class _WorkHistoryPageState extends State<WorkHistoryPage> {
                           runSpacing: 12,
                           children: [
                             _HistoryMetric(
-                              label: 'Overall rating',
+                              label: l10n.text('overallRating'),
                               value: profile.rating.toStringAsFixed(1),
                             ),
                             _HistoryMetric(
-                              label: 'Experience',
-                              value: '${profile.experienceMonths} mo',
+                              label: l10n.text('experience'),
+                              value:
+                                  '${profile.experienceMonths} ${l10n.text('monthsShort')}',
                             ),
                             _HistoryMetric(
-                              label: 'Jobs done',
+                              label: l10n.text('jobsDone'),
                               value: '${profile.successfulTasks}',
                             ),
                             _HistoryMetric(
-                              label: 'Cancelled',
+                              label: l10n.text('cancelled'),
                               value: '${profile.cancellations}',
                             ),
                           ],
@@ -82,7 +85,7 @@ class _WorkHistoryPageState extends State<WorkHistoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Profession breakdown',
+                          l10n.text('professionBreakdown'),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 12),
@@ -90,7 +93,7 @@ class _WorkHistoryPageState extends State<WorkHistoryPage> {
                           (item) => ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: Text(item.profession),
-                            trailing: Text('${item.months} months'),
+                            trailing: Text('${item.months} ${l10n.text('monthsShort')}'),
                           ),
                         ),
                       ],
@@ -104,7 +107,7 @@ class _WorkHistoryPageState extends State<WorkHistoryPage> {
                     child: ListTile(
                       title: Text(item.title),
                       subtitle: Text(
-                        '${item.counterparty} · ${dateFormat.format(item.date)} · ${item.status}',
+                        '${item.counterparty} • ${dateFormat.format(item.date)} • ${item.status}',
                       ),
                       trailing: Text('${item.amount.toInt()} KZT'),
                     ),

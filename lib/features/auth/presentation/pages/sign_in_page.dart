@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/utils/validators.dart';
 import 'package:jobi/core/widgets/app_text_field.dart';
 import 'package:jobi/core/widgets/primary_button.dart';
@@ -30,6 +31,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return DefaultTabController(
       length: 2,
       child: BlocListener<AuthCubit, AuthState>(
@@ -51,11 +53,11 @@ class _SignInPageState extends State<SignInPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Sign in'),
-            bottom: const TabBar(
+            title: Text(l10n.text('signInTitle')),
+            bottom: TabBar(
               tabs: [
-                Tab(text: 'Email'),
-                Tab(text: 'Phone + OTP'),
+                Tab(text: l10n.text('emailTab')),
+                Tab(text: l10n.text('phoneOtpTab')),
               ],
             ),
           ),
@@ -73,20 +75,20 @@ class _SignInPageState extends State<SignInPage> {
                             children: [
                               const SizedBox(height: 12),
                               Text(
-                                'Use email and password for worker or employer access.',
+                                l10n.text('signInEmailHint'),
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               const SizedBox(height: 24),
                               AppTextField(
                                 controller: _emailController,
-                                label: 'Email',
+                                label: l10n.text('email'),
                                 keyboardType: TextInputType.emailAddress,
                                 validator: Validators.email,
                               ),
                               const SizedBox(height: 16),
                               AppTextField(
                                 controller: _passwordController,
-                                label: 'Password',
+                                label: l10n.text('password'),
                                 obscureText: true,
                                 validator: Validators.password,
                               ),
@@ -96,21 +98,21 @@ class _SignInPageState extends State<SignInPage> {
                                 child: TextButton(
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
+                                      SnackBar(
                                         content: Text(
-                                          'Forgot-password flow is left as a future backend hook.',
+                                          l10n.text('forgotPasswordPlaceholder'),
                                         ),
                                       ),
                                     );
                                   },
-                                  child: const Text('Forgot password?'),
+                                  child: Text(l10n.text('forgotPassword')),
                                 ),
                               ),
                               const SizedBox(height: 8),
                               BlocBuilder<AuthCubit, AuthState>(
                                 builder: (context, state) {
                                   return PrimaryButton(
-                                    label: 'Sign in',
+                                    label: l10n.text('signIn'),
                                     isLoading:
                                         state.status == AuthStatus.authenticating,
                                     onPressed: () {
@@ -133,13 +135,13 @@ class _SignInPageState extends State<SignInPage> {
                             children: [
                               const SizedBox(height: 12),
                               Text(
-                                'Enter your phone number and use OTP verification.',
+                                l10n.text('signInPhoneHint'),
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               const SizedBox(height: 24),
                               AppTextField(
                                 controller: _phoneController,
-                                label: 'Phone number',
+                                label: l10n.text('phoneNumber'),
                                 keyboardType: TextInputType.phone,
                                 validator: Validators.phone,
                               ),
@@ -147,7 +149,7 @@ class _SignInPageState extends State<SignInPage> {
                               BlocBuilder<AuthCubit, AuthState>(
                                 builder: (context, state) {
                                   return PrimaryButton(
-                                    label: 'Send OTP code',
+                                    label: l10n.text('sendOtpCode'),
                                     isLoading:
                                         state.status == AuthStatus.authenticating,
                                     onPressed: () {
@@ -161,7 +163,7 @@ class _SignInPageState extends State<SignInPage> {
                                 },
                               ),
                               const SizedBox(height: 12),
-                              const Text('Demo mode: use code 123456 after sending.'),
+                              Text(l10n.text('demoOtpHint')),
                             ],
                           ),
                         ),
@@ -172,7 +174,7 @@ class _SignInPageState extends State<SignInPage> {
                     onPressed: () =>
                         context.read<AuthCubit>().signInWithGooglePlaceholder(),
                     icon: const Icon(Icons.login_rounded),
-                    label: const Text('Google sign-in placeholder'),
+                    label: Text(l10n.text('googlePlaceholder')),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size.fromHeight(52),
                     ),
@@ -180,7 +182,7 @@ class _SignInPageState extends State<SignInPage> {
                   const SizedBox(height: 12),
                   TextButton(
                     onPressed: () => context.go('/auth/sign-up'),
-                    child: const Text('Need an account? Sign up'),
+                    child: Text(l10n.text('needAccountSignUp')),
                   ),
                 ],
               ),

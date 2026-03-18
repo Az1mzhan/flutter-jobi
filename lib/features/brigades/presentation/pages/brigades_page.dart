@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/brigades/presentation/cubit/brigades_cubit.dart';
 
@@ -24,11 +25,12 @@ class _BrigadesPageState extends State<BrigadesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<BrigadesCubit, BrigadesState>(
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Brigades'),
+            title: Text(l10n.text('brigadesTitle')),
             actions: [
               IconButton(
                 onPressed: () => context.push('/brigades/create'),
@@ -45,16 +47,16 @@ class _BrigadesPageState extends State<BrigadesPage> {
 
                 if (state.status == BrigadesStatus.error && state.brigades.isEmpty) {
                   return ErrorStateView(
-                    message: state.message ?? 'Unable to load brigades',
+                    message: state.message ?? l10n.text('networkError'),
                     onRetry: () => context.read<BrigadesCubit>().loadBrigades(),
                   );
                 }
 
                 if (state.brigades.isEmpty) {
                   return EmptyStateView(
-                    title: 'No brigades yet',
-                    message: 'Create a brigade to coordinate a team and share tasks.',
-                    actionLabel: 'Create brigade',
+                    title: l10n.text('noBrigadesYet'),
+                    message: l10n.text('brigadesEmptyHint'),
+                    actionLabel: l10n.text('createBrigade'),
                     onAction: () => context.push('/brigades/create'),
                   );
                 }
@@ -72,9 +74,11 @@ class _BrigadesPageState extends State<BrigadesPage> {
                           onTap: () => context.push('/brigades/${brigade.id}'),
                           title: Text(brigade.name),
                           subtitle: Text(
-                            '${brigade.memberCount} members · ${brigade.completedTasks} completed jobs',
+                            '${brigade.memberCount} ${l10n.text('members').toLowerCase()} • ${l10n.format('completedJobs', {'count': '${brigade.completedTasks}'})}',
                           ),
-                          trailing: Chip(label: Text('${brigade.rating.toStringAsFixed(1)} ★')),
+                          trailing: Chip(
+                            label: Text('${brigade.rating.toStringAsFixed(1)} ★'),
+                          ),
                         ),
                       );
                     },

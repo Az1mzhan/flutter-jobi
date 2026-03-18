@@ -7,20 +7,20 @@ class ChatMockDataSource {
     _threads = [
       ChatThreadModel(
         id: 'chat_1',
-        title: 'Khan Stroy LLP',
-        subtitle: 'Task-based chat',
+        title: 'Хан Строй',
+        subtitle: 'Чат по задаче',
         unreadCount: 2,
-        lastMessagePreview: 'Can your brigade start this evening?',
+        lastMessagePreview: 'Ваша бригада может выйти сегодня вечером?',
         lastMessageAt: DateTime.now().subtract(const Duration(minutes: 14)),
         taskId: 'task_1',
         isOnline: true,
       ),
       ChatThreadModel(
         id: 'chat_2',
-        title: 'Dias R.',
-        subtitle: 'Direct chat',
+        title: 'Диас Р.',
+        subtitle: 'Личный чат',
         unreadCount: 0,
-        lastMessagePreview: 'I will share the exact address soon.',
+        lastMessagePreview: 'Скоро отправлю точный адрес.',
         lastMessageAt: DateTime.now().subtract(const Duration(hours: 3)),
         taskId: null,
         isOnline: false,
@@ -33,8 +33,8 @@ class ChatMockDataSource {
           id: 'm1',
           chatId: 'chat_1',
           senderId: 'peer_1',
-          senderName: 'Khan Stroy LLP',
-          text: 'Can your brigade start this evening?',
+          senderName: 'Хан Строй',
+          text: 'Ваша бригада может выйти сегодня вечером?',
           imageUrl: null,
           sentAt: DateTime.now().subtract(const Duration(minutes: 20)),
           isMine: false,
@@ -44,8 +44,8 @@ class ChatMockDataSource {
           id: 'm2',
           chatId: 'chat_1',
           senderId: 'me',
-          senderName: 'Me',
-          text: 'Yes, two painters are available after 18:00.',
+          senderName: 'Я',
+          text: 'Да, два маляра свободны после 18:00.',
           imageUrl: null,
           sentAt: DateTime.now().subtract(const Duration(minutes: 16)),
           isMine: true,
@@ -57,8 +57,8 @@ class ChatMockDataSource {
           id: 'm3',
           chatId: 'chat_2',
           senderId: 'peer_2',
-          senderName: 'Dias R.',
-          text: 'I will share the exact address soon.',
+          senderName: 'Диас Р.',
+          text: 'Скоро отправлю точный адрес.',
           imageUrl: null,
           sentAt: DateTime.now().subtract(const Duration(hours: 3)),
           isMine: false,
@@ -104,7 +104,7 @@ class ChatMockDataSource {
       id: 'm_${DateTime.now().millisecondsSinceEpoch}',
       chatId: threadId,
       senderId: 'me',
-      senderName: 'Me',
+      senderName: 'Я',
       text: text,
       imageUrl: null,
       sentAt: DateTime.now(),
@@ -117,7 +117,7 @@ class ChatMockDataSource {
     _socketService.scheduleReply(
       threadId: threadId,
       senderName: thread.title,
-      replyText: 'Received. We will confirm in a moment.',
+      replyText: 'Принято. Подтвердим через минуту.',
     );
     return message;
   }
@@ -128,7 +128,7 @@ class ChatMockDataSource {
       id: 'img_${DateTime.now().millisecondsSinceEpoch}',
       chatId: threadId,
       senderId: 'me',
-      senderName: 'Me',
+      senderName: 'Я',
       text: '',
       imageUrl: 'https://example.com/image-placeholder.jpg',
       sentAt: DateTime.now(),
@@ -136,7 +136,7 @@ class ChatMockDataSource {
       isRead: false,
     );
     _messages.putIfAbsent(threadId, () => <ChatMessageModel>[]).add(message);
-    _updateThreadPreview(threadId, message, preview: 'Image sent');
+    _updateThreadPreview(threadId, message, preview: 'Изображение отправлено');
     return message;
   }
 

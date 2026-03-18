@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/utils/validators.dart';
 import 'package:jobi/core/widgets/app_text_field.dart';
 import 'package:jobi/core/widgets/primary_button.dart';
@@ -21,12 +22,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final _regionController = TextEditingController();
   final _aboutController = TextEditingController();
   final _allProfessions = const [
-    'Painter',
-    'Finisher',
-    'Electrician',
-    'Plumber',
-    'Loader',
-    'Brigade leader',
+    'Маляр',
+    'Отделочник',
+    'Электрик',
+    'Сантехник',
+    'Грузчик',
+    'Бригадир',
   ];
   final _selectedProfessions = <String>{};
   bool _seeded = false;
@@ -54,6 +55,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocConsumer<ProfileCubit, ProfileState>(
       listenWhen: (previous, current) =>
           previous.status != current.status || previous.message != current.message,
@@ -62,7 +64,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ScaffoldMessenger.of(context)
             ..clearSnackBars()
             ..showSnackBar(
-              const SnackBar(content: Text('Profile updated')),
+              SnackBar(content: Text(l10n.text('profileUpdated'))),
             );
           context.pop();
         }
@@ -76,7 +78,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         _seed(profile);
 
         return Scaffold(
-          appBar: AppBar(title: const Text('Edit profile')),
+          appBar: AppBar(title: Text(l10n.text('editProfile'))),
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(24),
@@ -86,35 +88,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   children: [
                     AppTextField(
                       controller: _fullNameController,
-                      label: 'Full name',
+                      label: l10n.text('fullName'),
                       validator: (value) =>
-                          Validators.required(value, fieldName: 'Full name'),
+                          Validators.required(value, fieldName: l10n.text('fullName')),
                     ),
                     const SizedBox(height: 16),
                     AppTextField(
                       controller: _cityController,
-                      label: 'City',
+                      label: l10n.text('city'),
                       validator: (value) =>
-                          Validators.required(value, fieldName: 'City'),
+                          Validators.required(value, fieldName: l10n.text('city')),
                     ),
                     const SizedBox(height: 16),
                     AppTextField(
                       controller: _regionController,
-                      label: 'Region',
+                      label: l10n.text('region'),
                       validator: (value) =>
-                          Validators.required(value, fieldName: 'Region'),
+                          Validators.required(value, fieldName: l10n.text('region')),
                     ),
                     const SizedBox(height: 16),
                     AppTextField(
                       controller: _aboutController,
-                      label: 'About',
+                      label: l10n.text('about'),
                       maxLines: 4,
                       validator: (value) =>
-                          Validators.required(value, fieldName: 'About'),
+                          Validators.required(value, fieldName: l10n.text('about')),
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Professions',
+                      l10n.text('professions'),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 12),
@@ -141,7 +143,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     const SizedBox(height: 28),
                     PrimaryButton(
-                      label: 'Save changes',
+                      label: l10n.text('saveChanges'),
                       isLoading: state.status == ProfileStatus.saving,
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jobi/core/constants/user_roles.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
+import 'package:jobi/core/l10n/enum_localizations.dart';
 import 'package:jobi/core/utils/validators.dart';
 import 'package:jobi/core/widgets/app_text_field.dart';
 import 'package:jobi/core/widgets/primary_button.dart';
@@ -33,6 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final roles = RoleType.values.where((role) => role != RoleType.administrator);
 
     return BlocListener<AuthCubit, AuthState>(
@@ -48,7 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Create account')),
+        appBar: AppBar(title: Text(l10n.text('createAccount'))),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -57,40 +60,40 @@ class _SignUpPageState extends State<SignUpPage> {
               child: ListView(
                 children: [
                   Text(
-                    'Create a flexible multi-role account for workers, employers, companies, and brigades.',
+                    l10n.text('createFlexibleAccount'),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 24),
                   AppTextField(
                     controller: _fullNameController,
-                    label: 'Full name',
+                    label: l10n.text('fullName'),
                     validator: (value) =>
-                        Validators.required(value, fieldName: 'Full name'),
+                        Validators.required(value, fieldName: l10n.text('fullName')),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _emailController,
-                    label: 'Email',
+                    label: l10n.text('email'),
                     keyboardType: TextInputType.emailAddress,
                     validator: Validators.email,
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _phoneController,
-                    label: 'Phone number',
+                    label: l10n.text('phoneNumber'),
                     keyboardType: TextInputType.phone,
                     validator: Validators.phone,
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _passwordController,
-                    label: 'Password',
+                    label: l10n.text('password'),
                     obscureText: true,
                     validator: Validators.password,
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Choose your roles',
+                    l10n.text('chooseRoles'),
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 12),
@@ -100,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: roles
                         .map(
                           (role) => FilterChip(
-                            label: Text(role.shortLabel),
+                            label: Text(role.localizedShortLabel(context)),
                             selected: _selectedRoles.contains(role),
                             onSelected: (selected) {
                               setState(() {
@@ -119,7 +122,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   BlocBuilder<AuthCubit, AuthState>(
                     builder: (context, state) {
                       return PrimaryButton(
-                        label: 'Create account',
+                        label: l10n.text('createAccount'),
                         isLoading: state.status == AuthStatus.authenticating,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -138,7 +141,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: 12),
                   TextButton(
                     onPressed: () => context.go('/auth/sign-in'),
-                    child: const Text('Already have an account? Sign in'),
+                    child: Text(l10n.text('alreadyHaveAccountSignIn')),
                   ),
                 ],
               ),

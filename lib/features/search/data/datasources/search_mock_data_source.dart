@@ -10,10 +10,10 @@ class SearchMockDataSource {
         _workers = const [
           WorkerSummaryModel(
             id: 'worker_1',
-            fullName: 'Aidana K.',
-            profession: 'Painter',
-            city: 'Almaty',
-            region: 'Almaty Region',
+            fullName: 'Айдана К.',
+            profession: 'Маляр',
+            city: 'Алматы',
+            region: 'Алматинская область',
             distanceKm: 1.4,
             rating: 4.8,
             availableNow: true,
@@ -22,10 +22,10 @@ class SearchMockDataSource {
           ),
           WorkerSummaryModel(
             id: 'worker_2',
-            fullName: 'Dias R.',
-            profession: 'Loader',
-            city: 'Almaty',
-            region: 'Almaty Region',
+            fullName: 'Диас Р.',
+            profession: 'Грузчик',
+            city: 'Алматы',
+            region: 'Алматинская область',
             distanceKm: 4.6,
             rating: 4.5,
             availableNow: true,
@@ -34,10 +34,10 @@ class SearchMockDataSource {
           ),
           WorkerSummaryModel(
             id: 'worker_3',
-            fullName: 'Zhanar T.',
-            profession: 'Electrician',
-            city: 'Astana',
-            region: 'Akmola Region',
+            fullName: 'Жанар Т.',
+            profession: 'Электрик',
+            city: 'Астана',
+            region: 'Акмолинская область',
             distanceKm: 12,
             rating: 4.9,
             availableNow: false,
@@ -46,10 +46,10 @@ class SearchMockDataSource {
           ),
           WorkerSummaryModel(
             id: 'worker_4',
-            fullName: 'Maksat P.',
-            profession: 'Plumber',
-            city: 'Shymkent',
-            region: 'Turkistan Region',
+            fullName: 'Максат П.',
+            profession: 'Сантехник',
+            city: 'Шымкент',
+            region: 'Туркестанская область',
             distanceKm: 7.2,
             rating: 4.3,
             availableNow: true,
@@ -58,10 +58,10 @@ class SearchMockDataSource {
           ),
           WorkerSummaryModel(
             id: 'worker_5',
-            fullName: 'Brigada N.',
-            profession: 'Brigade leader',
-            city: 'Almaty',
-            region: 'Almaty Region',
+            fullName: 'Бригада Н.',
+            profession: 'Бригадир',
+            city: 'Алматы',
+            region: 'Алматинская область',
             distanceKm: 3.1,
             rating: 4.7,
             availableNow: true,
@@ -76,7 +76,7 @@ class SearchMockDataSource {
   Future<SearchPageResult<WorkerSummary>> searchWorkers(SearchFilters filters) async {
     await Future<void>.delayed(AppConstants.mockDelay);
 
-    var filtered = _workers.where(
+    final filtered = _workers.where(
       (worker) =>
           (filters.nationwide || filters.city.isEmpty || worker.city == filters.city) &&
           (filters.nationwide ||

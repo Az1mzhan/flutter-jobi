@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/search/domain/entities/search_entities.dart';
 import 'package:jobi/features/search/presentation/cubit/search_cubit.dart';
@@ -25,6 +26,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> _openFilters(BuildContext context, SearchState state) async {
+    final l10n = context.l10n;
     final cityController = TextEditingController(text: state.filters.city);
     final regionController = TextEditingController(text: state.filters.region);
     final districtController = TextEditingController(text: state.filters.district);
@@ -52,13 +54,18 @@ class _SearchPageState extends State<SearchPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Search filters',
+                      l10n.text('searchFilters'),
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w800,
                           ),
                     ),
                     const SizedBox(height: 16),
-                    Text('Radius: ${radiusKm.toStringAsFixed(0)} km'),
+                    Text(
+                      l10n.format(
+                        'radiusKm',
+                        {'value': radiusKm.toStringAsFixed(0)},
+                      ),
+                    ),
                     Slider(
                       min: 0.5,
                       max: 100,
@@ -71,22 +78,22 @@ class _SearchPageState extends State<SearchPage> {
                     const SizedBox(height: 8),
                     TextField(
                       controller: cityController,
-                      decoration: const InputDecoration(labelText: 'City'),
+                      decoration: InputDecoration(labelText: l10n.text('city')),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       controller: regionController,
-                      decoration: const InputDecoration(labelText: 'Region'),
+                      decoration: InputDecoration(labelText: l10n.text('region')),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       controller: districtController,
-                      decoration: const InputDecoration(labelText: 'District'),
+                      decoration: InputDecoration(labelText: l10n.text('district')),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       controller: professionController,
-                      decoration: const InputDecoration(labelText: 'Profession'),
+                      decoration: InputDecoration(labelText: l10n.text('profession')),
                     ),
                     const SizedBox(height: 12),
                     SwitchListTile.adaptive(
@@ -94,13 +101,13 @@ class _SearchPageState extends State<SearchPage> {
                       contentPadding: EdgeInsets.zero,
                       onChanged: (value) =>
                           setModalState(() => availableOnly = value),
-                      title: const Text('Available only'),
+                      title: Text(l10n.text('availableOnly')),
                     ),
                     SwitchListTile.adaptive(
                       value: nationwide,
                       contentPadding: EdgeInsets.zero,
                       onChanged: (value) => setModalState(() => nationwide = value),
-                      title: const Text('Search across Kazakhstan'),
+                      title: Text(l10n.text('searchAcrossKazakhstan')),
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
@@ -120,7 +127,7 @@ class _SearchPageState extends State<SearchPage> {
                               );
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Apply filters'),
+                        child: Text(l10n.text('applyFilters')),
                       ),
                     ),
                   ],
@@ -135,6 +142,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         final itemsAreEmpty = state.mode == SearchMode.workers
@@ -143,7 +151,7 @@ class _SearchPageState extends State<SearchPage> {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Search'),
+            title: Text(l10n.text('searchTitle')),
             actions: [
               IconButton(
                 onPressed: () => _openFilters(context, state),
@@ -157,16 +165,16 @@ class _SearchPageState extends State<SearchPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                   child: SegmentedButton<SearchMode>(
-                    segments: const [
+                    segments: [
                       ButtonSegment(
                         value: SearchMode.workers,
-                        label: Text('Workers'),
-                        icon: Icon(Icons.people_alt_outlined),
+                        label: Text(l10n.text('workers')),
+                        icon: const Icon(Icons.people_alt_outlined),
                       ),
                       ButtonSegment(
                         value: SearchMode.tasks,
-                        label: Text('Tasks'),
-                        icon: Icon(Icons.assignment_outlined),
+                        label: Text(l10n.text('tasks')),
+                        icon: const Icon(Icons.assignment_outlined),
                       ),
                     ],
                     selected: {state.mode},
@@ -181,15 +189,20 @@ class _SearchPageState extends State<SearchPage> {
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
-                      _MiniFilter(label: '${state.filters.radiusKm.toStringAsFixed(0)} km'),
+                      _MiniFilter(
+                        label: l10n.format(
+                          'radiusKm',
+                          {'value': state.filters.radiusKm.toStringAsFixed(0)},
+                        ),
+                      ),
                       if (state.filters.city.isNotEmpty)
                         _MiniFilter(label: state.filters.city),
                       if (state.filters.profession.isNotEmpty)
                         _MiniFilter(label: state.filters.profession),
                       if (state.filters.availableOnly)
-                        const _MiniFilter(label: 'Available now'),
+                        _MiniFilter(label: l10n.text('availableNow')),
                       if (state.filters.nationwide)
-                        const _MiniFilter(label: 'Kazakhstan'),
+                        _MiniFilter(label: l10n.text('kazakhstan')),
                     ],
                   ),
                 ),
@@ -202,14 +215,12 @@ class _SearchPageState extends State<SearchPage> {
                       color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     ),
                     padding: const EdgeInsets.all(18),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.map_outlined, size: 34),
-                        SizedBox(width: 12),
+                        const Icon(Icons.map_outlined, size: 34),
+                        const SizedBox(width: 12),
                         Expanded(
-                          child: Text(
-                            'Map-ready architecture placeholder for future geo view.',
-                          ),
+                          child: Text(l10n.text('mapReadyPlaceholder')),
                         ),
                       ],
                     ),
@@ -224,17 +235,16 @@ class _SearchPageState extends State<SearchPage> {
 
                       if (state.status == SearchStatus.error && itemsAreEmpty) {
                         return ErrorStateView(
-                          message: state.message ?? 'Search failed',
+                          message: state.message ?? l10n.text('searchFailed'),
                           onRetry: () => context.read<SearchCubit>().load(),
                         );
                       }
 
                       if (itemsAreEmpty) {
                         return EmptyStateView(
-                          title: 'No results yet',
-                          message:
-                              'Try widening the radius, changing city filters, or switching search mode.',
-                          actionLabel: 'Adjust filters',
+                          title: l10n.text('noResultsYet'),
+                          message: l10n.text('searchEmptyHint'),
+                          actionLabel: l10n.text('adjustFilters'),
                           onAction: () => _openFilters(context, state),
                         );
                       }
@@ -257,7 +267,7 @@ class _SearchPageState extends State<SearchPage> {
                                 padding: const EdgeInsets.symmetric(vertical: 12),
                                 child: OutlinedButton(
                                   onPressed: () => context.read<SearchCubit>().loadMore(),
-                                  child: const Text('Load more'),
+                                  child: Text(l10n.text('loadMore')),
                                 ),
                               );
                             }
@@ -281,7 +291,9 @@ class _SearchPageState extends State<SearchPage> {
                                                   ?.copyWith(fontWeight: FontWeight.w800),
                                             ),
                                           ),
-                                          Chip(label: Text('${worker.rating} ★')),
+                                          Chip(
+                                            label: Text('${worker.rating.toStringAsFixed(1)} ★'),
+                                          ),
                                         ],
                                       ),
                                       const SizedBox(height: 8),
@@ -293,17 +305,21 @@ class _SearchPageState extends State<SearchPage> {
                                         children: [
                                           _MiniFilter(label: worker.city),
                                           _MiniFilter(
-                                            label: '${worker.distanceKm.toStringAsFixed(1)} km',
+                                            label:
+                                                '${worker.distanceKm.toStringAsFixed(1)} км',
                                           ),
                                           if (worker.availableNow)
-                                            const _MiniFilter(label: 'Available'),
+                                            _MiniFilter(label: l10n.text('available')),
                                           if (worker.readyToTravel)
-                                            const _MiniFilter(label: 'Travel ready'),
+                                            _MiniFilter(label: l10n.text('travelReady')),
                                         ],
                                       ),
                                       const SizedBox(height: 12),
                                       Text(
-                                        '${worker.completedTasks} completed jobs',
+                                        l10n.format(
+                                          'completedJobs',
+                                          {'count': '${worker.completedTasks}'},
+                                        ),
                                       ),
                                     ],
                                   ),

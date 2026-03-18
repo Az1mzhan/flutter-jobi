@@ -5,8 +5,8 @@ class NotificationsMockDataSource {
   final List<NotificationModel> _notifications = [
     NotificationModel(
       id: 'n1',
-      title: 'New applicant for your task',
-      body: 'Aidana K. applied to Office repainting',
+      title: 'Новый отклик на вашу задачу',
+      body: 'Айдана К. откликнулась на задачу "Покраска офиса"',
       type: 'task',
       createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
       isRead: false,
@@ -14,8 +14,8 @@ class NotificationsMockDataSource {
     ),
     NotificationModel(
       id: 'n2',
-      title: 'Message received',
-      body: 'Khan Stroy LLP sent a new message',
+      title: 'Новое сообщение',
+      body: 'Хан Строй отправил новое сообщение',
       type: 'chat',
       createdAt: DateTime.now().subtract(const Duration(hours: 2)),
       isRead: false,
@@ -23,8 +23,8 @@ class NotificationsMockDataSource {
     ),
     NotificationModel(
       id: 'n3',
-      title: 'Task completed',
-      body: 'Bathroom tile repair was marked completed',
+      title: 'Задача завершена',
+      body: 'Ремонт плитки в ванной отмечен как завершенный',
       type: 'task',
       createdAt: DateTime.now().subtract(const Duration(days: 1)),
       isRead: true,

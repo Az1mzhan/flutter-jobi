@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
+import 'package:jobi/core/l10n/locale_cubit.dart';
 import 'package:jobi/core/routing/app_router.dart';
+import 'package:jobi/core/storage/preferences_service.dart';
 import 'package:jobi/core/theme/app_theme.dart';
 import 'package:jobi/features/auth/domain/repositories/auth_repository.dart';
 import 'package:jobi/features/auth/presentation/cubit/auth_cubit.dart';
@@ -28,6 +32,7 @@ class AppDependencies {
     required this.chatRepository,
     required this.notificationsRepository,
     required this.brigadesRepository,
+    required this.preferencesService,
   });
 
   final AuthRepository authRepository;
@@ -37,6 +42,7 @@ class AppDependencies {
   final ChatRepository chatRepository;
   final NotificationsRepository notificationsRepository;
   final BrigadesRepository brigadesRepository;
+  final PreferencesService preferencesService;
 }
 
 class JobiApp extends StatefulWidget {
@@ -57,6 +63,7 @@ class _JobiAppState extends State<JobiApp> {
   late final ChatDetailCubit _chatDetailCubit;
   late final NotificationsCubit _notificationsCubit;
   late final BrigadesCubit _brigadesCubit;
+  late final LocaleCubit _localeCubit;
   late final GoRouter _router;
 
   @override
@@ -71,6 +78,8 @@ class _JobiAppState extends State<JobiApp> {
     _notificationsCubit =
         NotificationsCubit(widget.dependencies.notificationsRepository);
     _brigadesCubit = BrigadesCubit(widget.dependencies.brigadesRepository);
+    _localeCubit = LocaleCubit(widget.dependencies.preferencesService)
+      ..loadSavedLocale();
     _router = AppRouter(authCubit: _authCubit).router;
   }
 
@@ -84,6 +93,7 @@ class _JobiAppState extends State<JobiApp> {
     _chatDetailCubit.close();
     _notificationsCubit.close();
     _brigadesCubit.close();
+    _localeCubit.close();
     super.dispose();
   }
 
@@ -98,6 +108,7 @@ class _JobiAppState extends State<JobiApp> {
         RepositoryProvider.value(value: widget.dependencies.chatRepository),
         RepositoryProvider.value(value: widget.dependencies.notificationsRepository),
         RepositoryProvider.value(value: widget.dependencies.brigadesRepository),
+        RepositoryProvider.value(value: widget.dependencies.preferencesService),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -109,11 +120,24 @@ class _JobiAppState extends State<JobiApp> {
           BlocProvider.value(value: _chatDetailCubit),
           BlocProvider.value(value: _notificationsCubit),
           BlocProvider.value(value: _brigadesCubit),
+          BlocProvider.value(value: _localeCubit),
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light(),
-          routerConfig: _router,
+        child: BlocBuilder<LocaleCubit, Locale>(
+          builder: (context, locale) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.light(),
+              locale: locale,
+              supportedLocales: AppLocalizations.supportedLocales,
+              localizationsDelegates: const [
+                AppLocalizationsDelegate(),
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              routerConfig: _router,
+            );
+          },
         ),
       ),
     );

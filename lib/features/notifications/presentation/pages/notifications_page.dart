@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/notifications/presentation/cubit/notifications_cubit.dart';
 
@@ -26,10 +27,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<NotificationsCubit, NotificationsState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Notifications')),
+          appBar: AppBar(title: Text(l10n.text('notificationsTitle'))),
           body: SafeArea(
             child: Builder(
               builder: (context) {
@@ -41,15 +43,15 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 if (state.status == NotificationsStatus.error &&
                     state.notifications.isEmpty) {
                   return ErrorStateView(
-                    message: state.message ?? 'Unable to load notifications',
+                    message: state.message ?? l10n.text('networkError'),
                     onRetry: () => context.read<NotificationsCubit>().loadNotifications(),
                   );
                 }
 
                 if (state.notifications.isEmpty) {
-                  return const EmptyStateView(
-                    title: 'All caught up',
-                    message: 'New task, chat, and status alerts will appear here.',
+                  return EmptyStateView(
+                    title: l10n.text('allCaughtUp'),
+                    message: l10n.text('notificationsEmptyHint'),
                   );
                 }
 
@@ -79,7 +81,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           },
                           title: Text(notification.title),
                           subtitle: Text(
-                            '${notification.body}\n${DateFormat('d MMM · HH:mm').format(notification.createdAt)}',
+                            '${notification.body}\n${DateFormat('d MMM • HH:mm', l10n.localeName).format(notification.createdAt)}',
                           ),
                           trailing: notification.isRead
                               ? const Icon(Icons.done_all_rounded)

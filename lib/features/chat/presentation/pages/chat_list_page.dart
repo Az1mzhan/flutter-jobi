@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/chat/presentation/cubit/chat_list_cubit.dart';
 
@@ -25,10 +26,11 @@ class _ChatListPageState extends State<ChatListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<ChatListCubit, ChatListState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Chat')),
+          appBar: AppBar(title: Text(l10n.text('chatTitle'))),
           body: SafeArea(
             child: Builder(
               builder: (context) {
@@ -38,16 +40,15 @@ class _ChatListPageState extends State<ChatListPage> {
 
                 if (state.status == ChatListStatus.error && state.threads.isEmpty) {
                   return ErrorStateView(
-                    message: state.message ?? 'Unable to load chats',
+                    message: state.message ?? l10n.text('networkError'),
                     onRetry: () => context.read<ChatListCubit>().loadThreads(),
                   );
                 }
 
                 if (state.threads.isEmpty) {
-                  return const EmptyStateView(
-                    title: 'No conversations yet',
-                    message:
-                        'Chats will appear here once a task match or direct message is created.',
+                  return EmptyStateView(
+                    title: l10n.text('noConversationsYet'),
+                    message: l10n.text('chatListHint'),
                   );
                 }
 
@@ -75,7 +76,10 @@ class _ChatListPageState extends State<ChatListPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(DateFormat('HH:mm').format(thread.lastMessageAt)),
+                              Text(
+                                DateFormat('HH:mm', l10n.localeName)
+                                    .format(thread.lastMessageAt),
+                              ),
                               if (thread.unreadCount > 0) ...[
                                 const SizedBox(height: 6),
                                 CircleAvatar(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jobi/core/constants/app_constants.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -7,6 +8,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return Scaffold(
       body: Center(
         child: Column(
@@ -30,7 +32,7 @@ class SplashPage extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Instant local hiring for teams and specialists',
+              l10n.text('splashTagline'),
               style: theme.textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),

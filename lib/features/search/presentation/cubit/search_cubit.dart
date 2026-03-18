@@ -92,7 +92,7 @@ class SearchCubit extends Cubit<SearchState> {
       emit(
         state.copyWith(
           status: SearchStatus.error,
-          message: 'Unable to perform search right now.',
+          message: 'Сейчас не удается выполнить поиск.',
         ),
       );
     }
@@ -159,7 +159,7 @@ class SearchCubit extends Cubit<SearchState> {
       emit(
         state.copyWith(
           status: SearchStatus.error,
-          message: 'Unable to load more results.',
+          message: 'Не удалось загрузить дополнительные результаты.',
         ),
       );
     }

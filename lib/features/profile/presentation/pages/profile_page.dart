@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
+import 'package:jobi/core/l10n/enum_localizations.dart';
+import 'package:jobi/core/l10n/locale_cubit.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:jobi/features/profile/domain/entities/user_profile.dart';
@@ -28,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         if (state.status == ProfileStatus.loading && state.profile == null) {
@@ -36,9 +40,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
         if (state.status == ProfileStatus.error && state.profile == null) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Profile')),
+            appBar: AppBar(title: Text(l10n.text('profileTitle'))),
             body: ErrorStateView(
-              message: state.message ?? 'Unable to load profile',
+              message: state.message ?? l10n.text('networkError'),
               onRetry: () => context.read<ProfileCubit>().loadProfile(),
             ),
           );
@@ -46,19 +50,19 @@ class _ProfilePageState extends State<ProfilePage> {
 
         final profile = state.profile;
         if (profile == null) {
-          return const Scaffold(
+          return Scaffold(
             body: EmptyStateView(
-              title: 'No profile yet',
-              message: 'Profile details will appear here after sign-in.',
+              title: l10n.text('noProfileYet'),
+              message: l10n.text('profileAppearsAfterSignIn'),
             ),
           );
         }
 
-        final dateFormat = DateFormat('d MMM yyyy');
+        final dateFormat = DateFormat('d MMM yyyy', l10n.localeName);
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Profile'),
+            title: Text(l10n.text('profileTitle')),
             actions: [
               IconButton(
                 onPressed: () => context.push('/notifications'),
@@ -87,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Active role',
+                                l10n.text('activeRole'),
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                               const SizedBox(height: 12),
@@ -97,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     .map(
                                       (role) => DropdownMenuItem(
                                         value: role,
-                                        child: Text(role.label),
+                                        child: Text(role.localizedLabel(context)),
                                       ),
                                     )
                                     .toList(),
@@ -114,28 +118,77 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                   const SizedBox(height: 16),
+                  BlocBuilder<LocaleCubit, Locale>(
+                    builder: (context, locale) {
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.text('appLanguage'),
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                l10n.text('languageHint'),
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              const SizedBox(height: 12),
+                              DropdownButtonFormField<String>(
+                                initialValue: locale.languageCode,
+                                decoration: InputDecoration(
+                                  labelText: l10n.text('language'),
+                                ),
+                                items: [
+                                  DropdownMenuItem(
+                                    value: 'ru',
+                                    child: Text(l10n.text('languageRussian')),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'en',
+                                    child: Text(l10n.text('languageEnglish')),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  if (value != null) {
+                                    context.read<LocaleCubit>().changeLocale(value);
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('About', style: Theme.of(context).textTheme.titleMedium),
+                          Text(
+                            l10n.text('about'),
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                           const SizedBox(height: 12),
                           Text(profile.about),
                           const SizedBox(height: 20),
                           SwitchListTile.adaptive(
                             value: profile.availableNow,
-                            title: const Text('Available now'),
-                            subtitle: const Text('Show employers that you can start quickly'),
+                            title: Text(l10n.text('availableNow')),
+                            subtitle: Text(l10n.text('availableNowHint')),
                             contentPadding: EdgeInsets.zero,
                             onChanged: (value) =>
                                 context.read<ProfileCubit>().toggleAvailability(value),
                           ),
                           SwitchListTile.adaptive(
                             value: profile.readyToTravel,
-                            title: const Text('Ready to travel'),
-                            subtitle: const Text('Accept jobs outside your current city'),
+                            title: Text(l10n.text('readyToTravel')),
+                            subtitle: Text(l10n.text('readyToTravelHint')),
                             contentPadding: EdgeInsets.zero,
                             onChanged: (value) =>
                                 context.read<ProfileCubit>().toggleTravelReady(value),
@@ -154,22 +207,22 @@ class _ProfilePageState extends State<ProfilePage> {
                     childAspectRatio: 1.18,
                     children: [
                       ProfileStatTile(
-                        label: 'Rating',
+                        label: l10n.text('rating'),
                         value: profile.rating.toStringAsFixed(1),
                         icon: Icons.star_rounded,
                       ),
                       ProfileStatTile(
-                        label: 'Total tasks',
+                        label: l10n.text('totalTasks'),
                         value: profile.totalTasks.toString(),
                         icon: Icons.work_outline_rounded,
                       ),
                       ProfileStatTile(
-                        label: 'Successful',
+                        label: l10n.text('successful'),
                         value: profile.successfulTasks.toString(),
                         icon: Icons.verified_rounded,
                       ),
                       ProfileStatTile(
-                        label: 'Cancellations',
+                        label: l10n.text('cancellations'),
                         value: profile.cancellations.toString(),
                         icon: Icons.cancel_outlined,
                       ),
@@ -183,7 +236,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Professions & experience',
+                            l10n.text('professionsExperience'),
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 12),
@@ -193,7 +246,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: profile.experience
                                 .map(
                                   (item) => Chip(
-                                    label: Text('${item.profession} · ${item.months} mo'),
+                                    label: Text(
+                                      '${item.profession} • ${item.months} ${l10n.text('monthsShort')}',
+                                    ),
                                   ),
                                 )
                                 .toList(),
@@ -204,7 +259,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               const Icon(Icons.schedule_rounded),
                               const SizedBox(width: 8),
                               Text(
-                                'First job: ${dateFormat.format(profile.firstJobDate)}',
+                                l10n.format(
+                                  'firstJob',
+                                  {'date': dateFormat.format(profile.firstJobDate)},
+                                ),
                               ),
                             ],
                           ),
@@ -220,7 +278,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Work history preview',
+                            l10n.text('workHistoryPreview'),
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 12),
@@ -228,7 +286,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 (item) => ListTile(
                                   contentPadding: EdgeInsets.zero,
                                   title: Text(item.title),
-                                  subtitle: Text('${item.counterparty} · ${item.status}'),
+                                  subtitle: Text('${item.counterparty} • ${item.status}'),
                                   trailing: Text('${item.amount.toInt()} KZT'),
                                 ),
                               ),
@@ -238,11 +296,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               OutlinedButton(
                                 onPressed: () => context.push('/profile/history'),
-                                child: const Text('Open full history'),
+                                child: Text(l10n.text('openFullHistory')),
                               ),
                               OutlinedButton(
                                 onPressed: () => context.push('/brigades'),
-                                child: const Text('Brigades'),
+                                child: Text(l10n.text('brigades')),
                               ),
                             ],
                           ),
@@ -257,7 +315,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (context.mounted) context.go('/auth/welcome');
                     },
                     icon: const Icon(Icons.logout_rounded),
-                    label: const Text('Log out'),
+                    label: Text(l10n.text('logout')),
                   ),
                 ],
               ),

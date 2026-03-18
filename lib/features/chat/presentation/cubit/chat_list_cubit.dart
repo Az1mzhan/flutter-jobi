@@ -46,7 +46,7 @@ class ChatListCubit extends Cubit<ChatListState> {
       emit(
         state.copyWith(
           status: ChatListStatus.error,
-          message: 'Unable to load chats right now.',
+          message: 'Сейчас не удается загрузить чаты.',
         ),
       );
     }

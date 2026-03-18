@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/widgets/app_text_field.dart';
 import 'package:jobi/core/widgets/primary_button.dart';
 import 'package:jobi/features/auth/presentation/cubit/auth_cubit.dart';
@@ -26,6 +27,7 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocListener<AuthCubit, AuthState>(
       listenWhen: (previous, current) =>
           previous.status != current.status || previous.message != current.message,
@@ -39,7 +41,7 @@ class _OtpPageState extends State<OtpPage> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Verify OTP')),
+        appBar: AppBar(title: Text(l10n.text('verifyOtpTitle'))),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -48,19 +50,19 @@ class _OtpPageState extends State<OtpPage> {
               child: ListView(
                 children: [
                   Text(
-                    'Enter the 6-digit code sent to ${widget.phone}.',
+                    l10n.format('otpHint', {'phone': widget.phone}),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 8),
-                  const Text('Mock mode tip: use 123456.'),
+                  Text(l10n.text('demoOtpHint')),
                   const SizedBox(height: 24),
                   AppTextField(
                     controller: _otpController,
-                    label: 'Verification code',
+                    label: l10n.text('verificationCode'),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if ((value ?? '').trim().length != 6) {
-                        return 'Enter the 6-digit code';
+                        return l10n.text('enterSixDigitCode');
                       }
                       return null;
                     },
@@ -69,7 +71,7 @@ class _OtpPageState extends State<OtpPage> {
                   BlocBuilder<AuthCubit, AuthState>(
                     builder: (context, state) {
                       return PrimaryButton(
-                        label: 'Verify and continue',
+                        label: l10n.text('verifyAndContinue'),
                         isLoading: state.status == AuthStatus.authenticating,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -85,7 +87,7 @@ class _OtpPageState extends State<OtpPage> {
                   const SizedBox(height: 12),
                   OutlinedButton(
                     onPressed: () => context.read<AuthCubit>().sendOtp(widget.phone),
-                    child: const Text('Resend code'),
+                    child: Text(l10n.text('resendCode')),
                   ),
                 ],
               ),

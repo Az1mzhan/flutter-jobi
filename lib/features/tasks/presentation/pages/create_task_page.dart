@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/utils/validators.dart';
 import 'package:jobi/core/widgets/app_text_field.dart';
 import 'package:jobi/core/widgets/primary_button.dart';
@@ -18,14 +19,14 @@ class CreateTaskPage extends StatefulWidget {
 class _CreateTaskPageState extends State<CreateTaskPage> {
   final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
-  final _cityController = TextEditingController(text: 'Almaty');
-  final _regionController = TextEditingController(text: 'Almaty Region');
-  final _locationController = TextEditingController(text: 'Abay Avenue 25');
+  final _cityController = TextEditingController(text: 'Алматы');
+  final _regionController = TextEditingController(text: 'Алматинская область');
+  final _locationController = TextEditingController(text: 'пр. Абая, 25');
   final _priceController = TextEditingController(text: '70000');
   final _durationController = TextEditingController(text: '8');
   final _startTimeController = TextEditingController();
-  final _professions = const ['Painter', 'Loader', 'Electrician', 'Plumber'];
-  String _selectedProfession = 'Painter';
+  final _professions = const ['Маляр', 'Грузчик', 'Электрик', 'Сантехник'];
+  String _selectedProfession = 'Маляр';
   bool _urgent = false;
   DateTime _startTime = DateTime.now().add(const Duration(hours: 6));
 
@@ -48,7 +49,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   }
 
   void _syncStartTimeLabel() {
-    _startTimeController.text = DateFormat('d MMM yyyy · HH:mm').format(_startTime);
+    _startTimeController.text =
+        DateFormat('d MMM yyyy • HH:mm', 'ru').format(_startTime);
   }
 
   Future<void> _pickStartTime() async {
@@ -57,6 +59,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       initialDate: _startTime,
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 90)),
+      locale: const Locale('ru'),
     );
     if (pickedDate == null || !mounted) return;
 
@@ -80,6 +83,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocListener<TasksCubit, TasksState>(
       listenWhen: (previous, current) =>
           previous.status != current.status || previous.message != current.message,
@@ -91,7 +95,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Create task')),
+        appBar: AppBar(title: Text(l10n.text('createTaskTitle'))),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -114,57 +118,61 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         setState(() => _selectedProfession = value);
                       }
                     },
-                    decoration: const InputDecoration(labelText: 'Profession'),
+                    decoration: InputDecoration(labelText: l10n.text('profession')),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _descriptionController,
-                    label: 'Description',
+                    label: l10n.text('description'),
                     maxLines: 4,
                     validator: (value) =>
-                        Validators.required(value, fieldName: 'Description'),
+                        Validators.required(value, fieldName: l10n.text('description')),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _locationController,
-                    label: 'Location address',
-                    validator: (value) =>
-                        Validators.required(value, fieldName: 'Location'),
+                    label: l10n.text('locationAddress'),
+                    validator: (value) => Validators.required(
+                      value,
+                      fieldName: l10n.text('locationAddress'),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _cityController,
-                    label: 'City',
+                    label: l10n.text('city'),
                     validator: (value) =>
-                        Validators.required(value, fieldName: 'City'),
+                        Validators.required(value, fieldName: l10n.text('city')),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _regionController,
-                    label: 'Region',
+                    label: l10n.text('region'),
                     validator: (value) =>
-                        Validators.required(value, fieldName: 'Region'),
+                        Validators.required(value, fieldName: l10n.text('region')),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _priceController,
-                    label: 'Price (KZT)',
+                    label: l10n.text('priceKzt'),
                     keyboardType: TextInputType.number,
                     validator: (value) =>
-                        Validators.required(value, fieldName: 'Price'),
+                        Validators.required(value, fieldName: l10n.text('priceKzt')),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _durationController,
-                    label: 'Duration (hours)',
+                    label: l10n.text('durationHoursLabel'),
                     keyboardType: TextInputType.number,
-                    validator: (value) =>
-                        Validators.required(value, fieldName: 'Duration'),
+                    validator: (value) => Validators.required(
+                      value,
+                      fieldName: l10n.text('durationHoursLabel'),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
                     controller: _startTimeController,
-                    label: 'Start time',
+                    label: l10n.text('startTime'),
                     readOnly: true,
                     onTap: _pickStartTime,
                   ),
@@ -173,14 +181,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     value: _urgent,
                     contentPadding: EdgeInsets.zero,
                     onChanged: (value) => setState(() => _urgent = value),
-                    title: const Text('Urgent'),
-                    subtitle: const Text('Highlight the task for faster matching'),
+                    title: Text(l10n.text('urgent')),
+                    subtitle: Text(l10n.text('urgentHint')),
                   ),
                   const SizedBox(height: 24),
                   BlocBuilder<TasksCubit, TasksState>(
                     builder: (context, state) {
                       return PrimaryButton(
-                        label: 'Publish task',
+                        label: l10n.text('publishTask'),
                         isLoading: state.status == TasksStatus.saving,
                         onPressed: () async {
                           if (!_formKey.currentState!.validate()) return;
@@ -203,7 +211,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                 int.tryParse(_durationController.text.trim()) ?? 1,
                             urgent: _urgent,
                             status: TaskStatus.open,
-                            employerName: 'Current employer',
+                            employerName: 'Текущий работодатель',
                             workerName: null,
                             createdAt: DateTime.now(),
                           );

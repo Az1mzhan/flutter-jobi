@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
+import 'package:jobi/core/l10n/enum_localizations.dart';
 import 'package:jobi/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:jobi/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:jobi/features/profile/presentation/cubit/profile_cubit.dart';
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,8 +57,9 @@ class _HomePageState extends State<HomePage> {
           children: [
             BlocBuilder<AuthCubit, AuthState>(
               builder: (context, authState) {
-                final name = authState.session?.fullName ?? 'Welcome';
-                final role = authState.activeRole?.label ?? 'Member';
+                final name = authState.session?.fullName ?? 'JOBI';
+                final role = authState.activeRole?.localizedLabel(context) ??
+                    l10n.text('roleWorker');
                 return Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
@@ -71,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hello, $name',
+                        l10n.format('homeGreeting', {'name': name}),
                         style: theme.textTheme.headlineSmall?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
@@ -79,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Current role: $role',
+                        l10n.format('currentRole', {'role': role}),
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                         ),
@@ -91,11 +95,11 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           FilledButton.tonal(
                             onPressed: () => context.go('/search'),
-                            child: const Text('Explore nearby'),
+                            child: Text(l10n.text('exploreNearby')),
                           ),
                           FilledButton.tonal(
                             onPressed: () => context.push('/tasks/create'),
-                            child: const Text('Post a task'),
+                            child: Text(l10n.text('postTask')),
                           ),
                         ],
                       ),
@@ -112,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Expanded(
                       child: _DashboardCard(
-                        label: 'Rating',
+                        label: l10n.text('rating'),
                         value: profile?.rating.toStringAsFixed(1) ?? '--',
                         icon: Icons.star_rounded,
                       ),
@@ -120,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: _DashboardCard(
-                        label: 'Successful jobs',
+                        label: l10n.text('successfulJobs'),
                         value: profile?.successfulTasks.toString() ?? '--',
                         icon: Icons.verified_rounded,
                       ),
@@ -137,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Expanded(
                       child: _DashboardCard(
-                        label: 'Open tasks',
+                        label: l10n.text('openTasks'),
                         value: '$openTasks',
                         icon: Icons.assignment_outlined,
                       ),
@@ -150,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                               .where((item) => !item.isRead)
                               .length;
                           return _DashboardCard(
-                            label: 'Unread alerts',
+                            label: l10n.text('unreadAlerts'),
                             value: '$unread',
                             icon: Icons.notifications_active_outlined,
                           );
@@ -169,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Quick actions',
+                      l10n.text('quickActions'),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
@@ -182,17 +186,17 @@ class _HomePageState extends State<HomePage> {
                         OutlinedButton.icon(
                           onPressed: () => context.push('/brigades'),
                           icon: const Icon(Icons.groups_2_outlined),
-                          label: const Text('Brigades'),
+                          label: Text(l10n.text('brigades')),
                         ),
                         OutlinedButton.icon(
                           onPressed: () => context.push('/profile/history'),
                           icon: const Icon(Icons.insights_outlined),
-                          label: const Text('Ratings & history'),
+                          label: Text(l10n.text('ratingsHistory')),
                         ),
                         OutlinedButton.icon(
                           onPressed: () => context.go('/chat'),
                           icon: const Icon(Icons.chat_bubble_outline_rounded),
-                          label: const Text('Messages'),
+                          label: Text(l10n.text('messages')),
                         ),
                       ],
                     ),
@@ -208,15 +212,13 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Geo hiring flow',
+                      l10n.text('geoHiringFlow'),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Use Search for radius, district, city, region, or whole-country discovery. The current architecture is ready for a map screen when the geo backend is finalized.',
-                    ),
+                    Text(l10n.text('geoHiringDescription')),
                   ],
                 ),
               ),

@@ -50,7 +50,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(
         state.copyWith(
           status: ProfileStatus.error,
-          message: 'Unable to load profile right now.',
+          message: 'Сейчас не удается загрузить профиль.',
         ),
       );
     }
@@ -67,7 +67,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(
         state.copyWith(
           status: ProfileStatus.error,
-          message: 'Unable to save profile changes.',
+          message: 'Не удалось сохранить изменения профиля.',
         ),
       );
     }
@@ -82,7 +82,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(
         state.copyWith(
           status: ProfileStatus.error,
-          message: 'Unable to update availability.',
+          message: 'Не удалось обновить статус доступности.',
         ),
       );
     }
@@ -97,7 +97,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(
         state.copyWith(
           status: ProfileStatus.error,
-          message: 'Unable to update travel preference.',
+          message: 'Не удалось обновить готовность к выезду.',
         ),
       );
     }

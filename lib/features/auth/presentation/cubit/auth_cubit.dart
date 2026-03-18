@@ -97,7 +97,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         state.copyWith(
           status: AuthStatus.failure,
-          message: 'Unable to sign in right now.',
+          message: 'Сейчас не удается выполнить вход.',
         ),
       );
     }
@@ -111,7 +111,7 @@ class AuthCubit extends Cubit<AuthState> {
         state.copyWith(
           status: AuthStatus.otpSent,
           pendingPhone: phone,
-          message: 'Verification code sent',
+          message: 'Код подтверждения отправлен',
         ),
       );
     } on AppException catch (error) {
@@ -120,7 +120,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         state.copyWith(
           status: AuthStatus.failure,
-          message: 'Unable to send OTP right now.',
+          message: 'Сейчас не удается отправить OTP.',
         ),
       );
     }
@@ -146,7 +146,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         state.copyWith(
           status: AuthStatus.failure,
-          message: 'Verification failed. Please try again.',
+          message: 'Проверка кода не удалась. Попробуйте снова.',
         ),
       );
     }
@@ -181,7 +181,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         state.copyWith(
           status: AuthStatus.failure,
-          message: 'Registration failed. Please try again.',
+          message: 'Регистрация не удалась. Попробуйте снова.',
         ),
       );
     }
@@ -204,7 +204,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         state.copyWith(
           status: AuthStatus.failure,
-          message: 'Google sign-in placeholder failed.',
+          message: 'Не удалось выполнить демо-вход через Google.',
         ),
       );
     }

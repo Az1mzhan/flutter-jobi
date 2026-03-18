@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/features/tasks/domain/entities/task.dart';
 import 'package:jobi/features/tasks/presentation/widgets/task_status_chip.dart';
 
@@ -15,7 +16,9 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final startTimeLabel = DateFormat('d MMM · HH:mm').format(task.startTime);
+    final l10n = context.l10n;
+    final startTimeLabel =
+        DateFormat('d MMM • HH:mm', l10n.localeName).format(task.startTime);
 
     return Card(
       child: InkWell(
@@ -58,7 +61,10 @@ class TaskCard extends StatelessWidget {
                   ),
                   _MetaChip(
                     icon: Icons.timer_outlined,
-                    label: '${task.durationHours} h',
+                    label: l10n.format(
+                      'durationHours',
+                      {'count': '${task.durationHours}'},
+                    ),
                   ),
                 ],
               ),
@@ -105,6 +111,7 @@ class _UrgentBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
@@ -118,7 +125,7 @@ class _UrgentBanner extends StatelessWidget {
             color: Theme.of(context).colorScheme.error,
           ),
           const SizedBox(width: 8),
-          const Expanded(child: Text('Urgent task: quick response recommended')),
+          Expanded(child: Text(l10n.text('urgentTaskBanner'))),
         ],
       ),
     );

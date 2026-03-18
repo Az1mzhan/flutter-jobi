@@ -50,7 +50,7 @@ class BrigadesCubit extends Cubit<BrigadesState> {
       emit(
         state.copyWith(
           status: BrigadesStatus.error,
-          message: 'Unable to load brigades.',
+          message: 'Не удалось загрузить бригады.',
         ),
       );
     }
@@ -70,7 +70,7 @@ class BrigadesCubit extends Cubit<BrigadesState> {
       emit(
         state.copyWith(
           status: BrigadesStatus.error,
-          message: 'Unable to load brigade details.',
+          message: 'Не удалось загрузить детали бригады.',
         ),
       );
     }
@@ -100,7 +100,7 @@ class BrigadesCubit extends Cubit<BrigadesState> {
       emit(
         state.copyWith(
           status: BrigadesStatus.error,
-          message: 'Unable to create brigade.',
+          message: 'Не удалось создать бригаду.',
         ),
       );
       return null;
@@ -124,7 +124,7 @@ class BrigadesCubit extends Cubit<BrigadesState> {
       emit(
         state.copyWith(
           status: BrigadesStatus.error,
-          message: 'Unable to add member.',
+          message: 'Не удалось добавить участника.',
         ),
       );
     }
@@ -145,7 +145,7 @@ class BrigadesCubit extends Cubit<BrigadesState> {
       emit(
         state.copyWith(
           status: BrigadesStatus.error,
-          message: 'Unable to remove member.',
+          message: 'Не удалось удалить участника.',
         ),
       );
     }

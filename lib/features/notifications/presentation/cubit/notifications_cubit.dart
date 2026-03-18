@@ -51,7 +51,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       emit(
         state.copyWith(
           status: NotificationsStatus.error,
-          message: 'Unable to load notifications.',
+          message: 'Не удалось загрузить уведомления.',
         ),
       );
     }

@@ -80,7 +80,7 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
       emit(
         state.copyWith(
           status: ChatDetailStatus.error,
-          message: 'Unable to open this conversation.',
+          message: 'Не удалось открыть этот диалог.',
         ),
       );
     }
@@ -104,7 +104,7 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
       emit(
         state.copyWith(
           status: ChatDetailStatus.error,
-          message: 'Unable to send message.',
+          message: 'Не удалось отправить сообщение.',
         ),
       );
     }
@@ -128,7 +128,7 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
       emit(
         state.copyWith(
           status: ChatDetailStatus.error,
-          message: 'Unable to send image placeholder.',
+          message: 'Не удалось отправить изображение.',
         ),
       );
     }

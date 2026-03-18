@@ -79,7 +79,7 @@ class TasksCubit extends Cubit<TasksState> {
       emit(
         state.copyWith(
           status: TasksStatus.error,
-          message: 'Unable to load tasks right now.',
+          message: 'Сейчас не удается загрузить задачи.',
         ),
       );
     }
@@ -94,7 +94,7 @@ class TasksCubit extends Cubit<TasksState> {
       emit(
         state.copyWith(
           status: TasksStatus.error,
-          message: 'Unable to load task details.',
+          message: 'Не удалось загрузить детали задачи.',
         ),
       );
     }
@@ -120,7 +120,7 @@ class TasksCubit extends Cubit<TasksState> {
       emit(
         state.copyWith(
           status: TasksStatus.error,
-          message: 'Unable to create task.',
+          message: 'Не удалось создать задачу.',
         ),
       );
       return null;
@@ -148,7 +148,7 @@ class TasksCubit extends Cubit<TasksState> {
       emit(
         state.copyWith(
           status: TasksStatus.error,
-          message: 'Unable to update task status.',
+          message: 'Не удалось обновить статус задачи.',
         ),
       );
     }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
+import 'package:jobi/core/l10n/enum_localizations.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/tasks/domain/entities/task.dart';
 import 'package:jobi/features/tasks/presentation/cubit/tasks_cubit.dart';
@@ -26,14 +28,15 @@ class _TasksPageState extends State<TasksPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Tasks')),
+          appBar: AppBar(title: Text(l10n.text('tasksTitle'))),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () => context.push('/tasks/create'),
             icon: const Icon(Icons.add_rounded),
-            label: const Text('Create task'),
+            label: Text(l10n.text('createTask')),
           ),
           body: SafeArea(
             child: Column(
@@ -45,14 +48,14 @@ class _TasksPageState extends State<TasksPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
                       _FilterChip(
-                        label: 'All',
+                        label: l10n.text('all'),
                         selected: state.filter == null,
                         onTap: () =>
                             context.read<TasksCubit>().loadTasks(clearFilter: true),
                       ),
                       ...TaskStatus.values.map(
                         (status) => _FilterChip(
-                          label: status.label,
+                          label: status.localizedLabel(context),
                           selected: state.filter == status,
                           onTap: () => context.read<TasksCubit>().loadTasks(filter: status),
                         ),
@@ -69,17 +72,16 @@ class _TasksPageState extends State<TasksPage> {
 
                       if (state.status == TasksStatus.error && state.tasks.isEmpty) {
                         return ErrorStateView(
-                          message: state.message ?? 'Unable to load tasks.',
+                          message: state.message ?? l10n.text('networkError'),
                           onRetry: () => context.read<TasksCubit>().loadTasks(),
                         );
                       }
 
                       if (state.tasks.isEmpty) {
                         return EmptyStateView(
-                          title: 'No tasks yet',
-                          message:
-                              'Create the first job posting or wait for backend results to appear.',
-                          actionLabel: 'Create task',
+                          title: l10n.text('noTasksYet'),
+                          message: l10n.text('noTasksHint'),
+                          actionLabel: l10n.text('createTask'),
                           onAction: () => context.push('/tasks/create'),
                         );
                       }

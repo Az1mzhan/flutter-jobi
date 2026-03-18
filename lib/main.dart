@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:jobi/app.dart';
 import 'package:jobi/core/constants/app_constants.dart';
 import 'package:jobi/core/network/api_client.dart';
@@ -31,6 +32,8 @@ import 'package:jobi/features/tasks/data/repositories/tasks_repository_impl.dart
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('ru');
+  await initializeDateFormatting('en');
 
   const secureStorage = SecureStorageService(FlutterSecureStorage());
   final preferences = await PreferencesService.create();
@@ -78,6 +81,7 @@ Future<void> main() async {
           remoteDataSource: BrigadesRemoteDataSource(apiClient),
           mockDataSource: BrigadesMockDataSource(),
         ),
+        preferencesService: preferences,
       ),
     ),
   );

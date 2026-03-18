@@ -1,6 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:collection/collection.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/chat/presentation/cubit/chat_detail_cubit.dart';
 import 'package:jobi/features/chat/presentation/cubit/chat_list_cubit.dart';
@@ -35,6 +36,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final thread = context
         .watch<ChatListCubit>()
         .state
@@ -50,9 +52,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
         if (state.status == ChatDetailStatus.error && state.messages.isEmpty) {
           return Scaffold(
-            appBar: AppBar(title: Text(thread?.title ?? 'Chat')),
+            appBar: AppBar(title: Text(thread?.title ?? l10n.text('chatTitle'))),
             body: ErrorStateView(
-              message: state.message ?? 'Unable to open chat',
+              message: state.message ?? l10n.text('networkError'),
               onRetry: () => context.read<ChatDetailCubit>().openThread(widget.threadId),
             ),
           );
@@ -60,13 +62,15 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(thread?.title ?? 'Chat'),
+            title: Text(thread?.title ?? l10n.text('chatTitle')),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(28),
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Text(
-                  state.isConnected ? 'Connected' : 'Reconnecting...',
+                  state.isConnected
+                      ? l10n.text('connected')
+                      : l10n.text('reconnecting'),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -77,9 +81,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               children: [
                 Expanded(
                   child: state.messages.isEmpty
-                      ? const EmptyStateView(
-                          title: 'No messages yet',
-                          message: 'Start the conversation to coordinate the job.',
+                      ? EmptyStateView(
+                          title: l10n.text('noMessagesYet'),
+                          message: l10n.text('chatEmptyHint'),
                         )
                       : ListView.builder(
                           padding: const EdgeInsets.all(16),
@@ -114,8 +118,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                           controller: _messageController,
                           minLines: 1,
                           maxLines: 4,
-                          decoration: const InputDecoration(
-                            hintText: 'Write a message',
+                          decoration: InputDecoration(
+                            hintText: l10n.text('writeMessage'),
                           ),
                         ),
                       ),

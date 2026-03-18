@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
+import 'package:jobi/core/l10n/enum_localizations.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/tasks/domain/entities/task.dart';
 import 'package:jobi/features/tasks/presentation/cubit/tasks_cubit.dart';
@@ -26,6 +28,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, state) {
         final task = state.selectedTask;
@@ -35,25 +38,28 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
 
         if (state.status == TasksStatus.error && task == null) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Task details')),
+            appBar: AppBar(title: Text(l10n.text('taskDetails'))),
             body: ErrorStateView(
-              message: state.message ?? 'Unable to load task details.',
+              message: state.message ?? l10n.text('networkError'),
               onRetry: () => context.read<TasksCubit>().openTask(widget.taskId),
             ),
           );
         }
 
         if (task == null) {
-          return const Scaffold(
+          return Scaffold(
             body: EmptyStateView(
-              title: 'Task not found',
-              message: 'This task is missing from the current demo state.',
+              title: l10n.text('taskNotFound'),
+              message: l10n.text('taskMissingDemo'),
             ),
           );
         }
 
+        final startTimeLabel =
+            DateFormat('d MMM yyyy • HH:mm', l10n.localeName).format(task.startTime);
+
         return Scaffold(
-          appBar: AppBar(title: const Text('Task details')),
+          appBar: AppBar(title: Text(l10n.text('taskDetails'))),
           body: SafeArea(
             child: ListView(
               padding: const EdgeInsets.all(20),
@@ -90,11 +96,14 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                         ),
                         _DetailRow(
                           icon: Icons.schedule_rounded,
-                          label: DateFormat('d MMM yyyy · HH:mm').format(task.startTime),
+                          label: startTimeLabel,
                         ),
                         _DetailRow(
                           icon: Icons.timer_outlined,
-                          label: '${task.durationHours} hour(s)',
+                          label: l10n.format(
+                            'durationHours',
+                            {'count': '${task.durationHours}'},
+                          ),
                         ),
                         _DetailRow(
                           icon: Icons.business_center_outlined,
@@ -117,7 +126,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Status timeline',
+                          l10n.text('statusTimeline'),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 16),
@@ -133,7 +142,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                                 size: 16,
                               ),
                             ),
-                            title: Text(status.label),
+                            title: Text(status.localizedLabel(context)),
                           ),
                         ),
                       ],
@@ -148,7 +157,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Map-ready placeholder',
+                          l10n.text('mapReadyPlaceholder'),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 12),
@@ -159,8 +168,8 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                             color: Theme.of(context).colorScheme.surfaceContainerHighest,
                           ),
                           alignment: Alignment.center,
-                          child: const Text(
-                            'Reserved for map integration',
+                          child: Text(
+                            l10n.text('reservedMapIntegration'),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -194,6 +203,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
   }
 
   List<Widget> _actionButtons(BuildContext context, TaskEntity task) {
+    final l10n = context.l10n;
     final cubit = context.read<TasksCubit>();
     switch (task.status) {
       case TaskStatus.open:
@@ -202,7 +212,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
             child: ElevatedButton(
               onPressed: () =>
                   cubit.changeStatus(taskId: task.id, status: TaskStatus.assigned),
-              child: const Text('Accept / assign'),
+              child: Text(l10n.text('acceptAssign')),
             ),
           ),
           const SizedBox(width: 12),
@@ -210,7 +220,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
             child: OutlinedButton(
               onPressed: () =>
                   cubit.changeStatus(taskId: task.id, status: TaskStatus.rejected),
-              child: const Text('Reject'),
+              child: Text(l10n.text('reject')),
             ),
           ),
         ];
@@ -220,7 +230,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
             child: ElevatedButton(
               onPressed: () =>
                   cubit.changeStatus(taskId: task.id, status: TaskStatus.inProgress),
-              child: const Text('Start work'),
+              child: Text(l10n.text('startWork')),
             ),
           ),
         ];
@@ -230,7 +240,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
             child: ElevatedButton(
               onPressed: () =>
                   cubit.changeStatus(taskId: task.id, status: TaskStatus.completed),
-              child: const Text('Mark completed'),
+              child: Text(l10n.text('markCompleted')),
             ),
           ),
         ];
@@ -238,10 +248,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
       case TaskStatus.cancelled:
       case TaskStatus.rejected:
         return [
-          const Expanded(
+          Expanded(
             child: OutlinedButton(
               onPressed: null,
-              child: Text('No further actions'),
+              child: Text(l10n.text('noFurtherActions')),
             ),
           ),
         ];

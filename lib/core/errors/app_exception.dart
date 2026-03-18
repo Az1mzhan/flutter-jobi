@@ -9,12 +9,10 @@ class AppException implements Exception {
 }
 
 class UnauthorizedException extends AppException {
-  const UnauthorizedException(
-      [super.message = 'Session expired. Please sign in again.'])
+  const UnauthorizedException([super.message = 'Сессия истекла. Войдите снова.'])
       : super(code: 401);
 }
 
 class NetworkException extends AppException {
-  const NetworkException(
-      [super.message = 'Unable to reach the server right now.']);
+  const NetworkException([super.message = 'Сейчас не удается подключиться к серверу.']);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jobi/core/l10n/app_localizations.dart';
 import 'package:jobi/core/widgets/state_views.dart';
 import 'package:jobi/features/brigades/presentation/cubit/brigades_cubit.dart';
 
@@ -14,7 +15,7 @@ class BrigadeDetailPage extends StatefulWidget {
 
 class _BrigadeDetailPageState extends State<BrigadeDetailPage> {
   final _memberController = TextEditingController();
-  final _roleController = TextEditingController(text: 'Specialist');
+  final _roleController = TextEditingController(text: 'Специалист');
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _BrigadeDetailPageState extends State<BrigadeDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<BrigadesCubit, BrigadesState>(
       builder: (context, state) {
         final brigade = state.selectedBrigade;
@@ -42,19 +44,19 @@ class _BrigadeDetailPageState extends State<BrigadeDetailPage> {
 
         if (state.status == BrigadesStatus.error && brigade == null) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Brigade')),
+            appBar: AppBar(title: Text(l10n.text('brigade'))),
             body: ErrorStateView(
-              message: state.message ?? 'Unable to load brigade',
+              message: state.message ?? l10n.text('networkError'),
               onRetry: () => context.read<BrigadesCubit>().openBrigade(widget.brigadeId),
             ),
           );
         }
 
         if (brigade == null) {
-          return const Scaffold(
+          return Scaffold(
             body: EmptyStateView(
-              title: 'Brigade not found',
-              message: 'This brigade is missing from the current demo state.',
+              title: l10n.text('brigadeNotFound'),
+              message: l10n.text('brigadeMissingDemo'),
             ),
           );
         }
@@ -81,19 +83,19 @@ class _BrigadeDetailPageState extends State<BrigadeDetailPage> {
                           runSpacing: 12,
                           children: [
                             _BrigadeMetric(
-                              label: 'Leader',
+                              label: l10n.text('leader'),
                               value: brigade.leaderName,
                             ),
                             _BrigadeMetric(
-                              label: 'Rating',
+                              label: l10n.text('rating'),
                               value: brigade.rating.toStringAsFixed(1),
                             ),
                             _BrigadeMetric(
-                              label: 'Active tasks',
+                              label: l10n.text('activeTasksLabel'),
                               value: '${brigade.activeTasks}',
                             ),
                             _BrigadeMetric(
-                              label: 'Completed',
+                              label: l10n.text('completedShort'),
                               value: '${brigade.completedTasks}',
                             ),
                           ],
@@ -110,7 +112,7 @@ class _BrigadeDetailPageState extends State<BrigadeDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Members',
+                          l10n.text('members'),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 12),
@@ -140,18 +142,18 @@ class _BrigadeDetailPageState extends State<BrigadeDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Add member',
+                          l10n.text('addMember'),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 12),
                         TextField(
                           controller: _memberController,
-                          decoration: const InputDecoration(labelText: 'Full name'),
+                          decoration: InputDecoration(labelText: l10n.text('fullName')),
                         ),
                         const SizedBox(height: 12),
                         TextField(
                           controller: _roleController,
-                          decoration: const InputDecoration(labelText: 'Role'),
+                          decoration: InputDecoration(labelText: l10n.text('role')),
                         ),
                         const SizedBox(height: 16),
                         SizedBox(
@@ -163,12 +165,12 @@ class _BrigadeDetailPageState extends State<BrigadeDetailPage> {
                                     brigadeId: brigade.id,
                                     fullName: _memberController.text.trim(),
                                     role: _roleController.text.trim().isEmpty
-                                        ? 'Specialist'
+                                        ? l10n.text('specialist')
                                         : _roleController.text.trim(),
                                   );
                               _memberController.clear();
                             },
-                            child: const Text('Add member'),
+                            child: Text(l10n.text('addMember')),
                           ),
                         ),
                       ],
@@ -183,13 +185,11 @@ class _BrigadeDetailPageState extends State<BrigadeDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Brigade tasks',
+                          l10n.text('brigadeTasks'),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 12),
-                        const Text(
-                          'This area is reserved for brigade-scoped task assignment and statistics once the backend brigade task contract is connected.',
-                        ),
+                        Text(l10n.text('brigadeTasksReserved')),
                       ],
                     ),
                   ),
